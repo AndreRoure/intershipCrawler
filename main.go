@@ -1,16 +1,30 @@
 package main
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 func main() {
-	urls := []string{"https://www.google.com", "https://www.twitch.tv"}
-	wg := sync.WaitGroup{}
+	urls := []string{"https://br.indeed.com/jobs?q&l=Bras%C3%ADlia%2C%20DF&vjk=bd05e6fb411225f9"}
+	internships := make(map[string][]string)
+	messages := make(chan []string)
+	routines := sync.WaitGroup{}
 
 	for _, link := range urls {
-		wg.Add(1)
-		go get(link, wg)
+		routines.Add(1)
+		go get(link, &routines)
 	}
 
-	wg.Wait()
+	go func() {
+		fmt.Println("WAITING")
+		routines.Wait()
+		close(messages)
+	}()
 
+	for m := range messages {
+		internships[m[0]] = m[1:]
+	}
+	fmt.Println(internships)
+	fmt.Println("DONE")
 }
