@@ -1,14 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
-	"strings"
 )
 
-func regex(body string) {
-	//info := make([][]string, 2)
-	fmt.Println("ok")
+func next(body string) (link string) {
+	//fmt.Println(body)
+	next_regex, _ := regexp.Compile(`<a\shref='\/jobs\?q.*aria-label='Pr`)
+	next_results := (next_regex.FindAllString(body, -1))
+	v := next_results[0][len(next_results[0])-80:]
+	regex2, _ := regexp.Compile(`href='.*?'`)
+	v = regex2.FindString(v)
+
+	preprocess10, _ := regexp.Compile(`href='`)
+	preprocess11, _ := regexp.Compile(`'`)
+	v = preprocess10.ReplaceAllString(v, "")
+	v = preprocess11.ReplaceAllString(v, "")
+	v = "https://br.indeed.com" + v
+
+	return v
+}
+
+func regex(body string, c chan map[string]info) {
+	info_list := make([][]string, 0)
+	//fmt.Println("ok")
 
 	/////////////////////////////// RECUPERANDO HASHs ///////////////////////////////
 	hash_regex, _ := regexp.Compile(`data-jk="(.*?)"`)
@@ -22,7 +37,7 @@ func regex(body string) {
 		hash = (preprocess2.ReplaceAllString(hash, ""))
 		hash_results[index] = hash
 	}
-	fmt.Println(hash_results)
+	//fmt.Println(hash_results)
 
 	/////////////////////////////// RECUPERANDO TITLE ///////////////////////////////
 	title_regex, _ := regexp.Compile(`<span\stitle=".*?"`)
@@ -35,8 +50,8 @@ func regex(body string) {
 		title = (preprocess2.ReplaceAllString(title, ""))
 		title_results[index] = title
 	}
-	//info = append(info, title_results)
-	fmt.Println(title_results)
+	info_list = append(info_list, title_results)
+	//fmt.Println(title_results)
 
 	/////////////////////////////// RECUPERANDO LOCAL ///////////////////////////////
 	local_regex, _ := regexp.Compile(`class="companyLocation">.*?<`)
@@ -50,43 +65,50 @@ func regex(body string) {
 		local = (preprocess5.ReplaceAllString(local, ""))
 		local_results[index] = local
 	}
-	//info = append(info, local_results)
-	fmt.Println(local_results)
+	info_list = append(info_list, local_results)
+	//fmt.Println(local_results)
 
 	/////////////////////////////// RECUPERANDO EMPRESA ///////////////////////////////
-	company_regex, _ := regexp.Compile(`<span class="companyName">.*</span>`)
-	company_results := (company_regex.FindAllString(body, -1))
-
-	preprocess6, _ := regexp.Compile(`<span class="companyName">`)
-	preprocess7, _ := regexp.Compile(`</span>`)
-	preprocess8, _ := regexp.Compile(`rel="noopener">`)
-	preprocess9, _ := regexp.Compile(`</`)
-
-	company_regex_href, _ := regexp.Compile(`rel="noopener">.*?</`)
-
-	for index, company := range company_results {
-		if strings.Contains(company, `rel="noopener"`) {
-			company := company_regex_href.FindString(company)
-			company = preprocess8.ReplaceAllString(company, "")
-			company = preprocess9.ReplaceAllString(company, "")
-			company_results[index] = company
-
-		} else {
-			company := (preprocess6.ReplaceAllString(company, ""))
-			company = (preprocess7.ReplaceAllString(company, ""))
-			company_results[index] = company
-		}
-	}
-	fmt.Println(company_results)
-
-	/////////////////////////////// Criando Map ///////////////////////////////
-	//internships := make(map[string][]string)
-	//n := len(hash_results)
-	//for _, i := range info {
-	//	if n != len(i) {
-	//		panic("Error in regex")
+	//company_regex, _ := regexp.Compile(`<span class="companyName">.*</span>`)
+	//company_results := (company_regex.FindAllString(body, -1))
+	////fmt.Println(company_results)
+	//
+	//preprocess6, _ := regexp.Compile(`<span class="companyName">`)
+	//preprocess7, _ := regexp.Compile(`</span>`)
+	//preprocess8, _ := regexp.Compile(`rel="noopener">`)
+	//preprocess9, _ := regexp.Compile(`</`)
+	//
+	//company_regex_href, _ := regexp.Compile(`rel="noopener">.*?</`)
+	//
+	//for index, company := range company_results {
+	//	if strings.Contains(company, `rel="noopener"`) {
+	//		fmt.Print(company)
+	//		company := company_regex_href.FindString(company)
+	//		company = preprocess8.ReplaceAllString(company, "")
+	//		company = preprocess9.ReplaceAllString(company, "")
+	//		company_results[index] = company
+	//
+	//	} else {
+	//		//fmt.Println(company)
+	//		company := (preprocess6.ReplaceAllString(company, ""))
+	//		company = (preprocess7.ReplaceAllString(company, ""))
+	//		company_results[index] = company
 	//	}
 	//}
-	//for index
+	//fmt.Println(company_results)
+
+	/////////////////////////////// Criando Map ///////////////////////////////
+	internships := make(map[string]info)
+	n := len(hash_results)
+	for _, i := range info_list {
+		if n != len(i) {
+			panic("Error in regex")
+		}
+	}
+	for index, hash := range hash_results {
+		i := info{info_list[0][index], info_list[1][index]}
+		internships[hash] = i
+	}
+	c <- internships
 
 }
