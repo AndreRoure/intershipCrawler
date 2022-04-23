@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
 )
 
@@ -76,13 +77,16 @@ func regex(body string, c chan map[string]info) {
     // fmt.Println("------")
     preprocess6, _ := regexp.Compile(`.*">`)
     preprocess7, _ := regexp.Compile(`</span>`)
+	preprocess8, _ := regexp.Compile(`</a>`)
     
     for index, company := range company_results {
-        // fmt.Println(index,company)
         company := (preprocess6.ReplaceAllString(company, ""))
         company = (preprocess7.ReplaceAllString(company, ""))
+		company = (preprocess8.ReplaceAllString(company, ""))
         company_results[index] = company
+		fmt.Println(company)
     }
+	info_list = append(info_list, company_results)
 
 
 
