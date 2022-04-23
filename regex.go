@@ -69,33 +69,22 @@ func regex(body string, c chan map[string]info) {
 	//fmt.Println(local_results)
 
 	/////////////////////////////// RECUPERANDO EMPRESA ///////////////////////////////
-	//company_regex, _ := regexp.Compile(`<span class="companyName">.*</span>`)
-	//company_results := (company_regex.FindAllString(body, -1))
-	////fmt.Println(company_results)
-	//
-	//preprocess6, _ := regexp.Compile(`<span class="companyName">`)
-	//preprocess7, _ := regexp.Compile(`</span>`)
-	//preprocess8, _ := regexp.Compile(`rel="noopener">`)
-	//preprocess9, _ := regexp.Compile(`</`)
-	//
-	//company_regex_href, _ := regexp.Compile(`rel="noopener">.*?</`)
-	//
-	//for index, company := range company_results {
-	//	if strings.Contains(company, `rel="noopener"`) {
-	//		fmt.Print(company)
-	//		company := company_regex_href.FindString(company)
-	//		company = preprocess8.ReplaceAllString(company, "")
-	//		company = preprocess9.ReplaceAllString(company, "")
-	//		company_results[index] = company
-	//
-	//	} else {
-	//		//fmt.Println(company)
-	//		company := (preprocess6.ReplaceAllString(company, ""))
-	//		company = (preprocess7.ReplaceAllString(company, ""))
-	//		company_results[index] = company
-	//	}
-	//}
-	//fmt.Println(company_results)
+	company_regex, _ := regexp.Compile(`<div class="heading6 company_location tapItem-gutter companyInfo">.*?<\/span>`)
+    company_results := (company_regex.FindAllString(body, -1))
+    // fmt.Println("------")
+    // fmt.Println(company_results)
+    // fmt.Println("------")
+    preprocess6, _ := regexp.Compile(`.*">`)
+    preprocess7, _ := regexp.Compile(`</span>`)
+    
+    for index, company := range company_results {
+        // fmt.Println(index,company)
+        company := (preprocess6.ReplaceAllString(company, ""))
+        company = (preprocess7.ReplaceAllString(company, ""))
+        company_results[index] = company
+    }
+
+
 
 	/////////////////////////////// Criando Map ///////////////////////////////
 	internships := make(map[string]info)
