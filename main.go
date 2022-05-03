@@ -34,4 +34,5 @@ func main() {
 type info struct {
 	titulo string
 	local  string
+	link   string
 }

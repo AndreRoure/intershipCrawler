@@ -5,6 +5,24 @@ import (
 	"regexp"
 )
 
+func catchCaptcha(body string) (is bool) {
+	title, _ := regexp.Compile(`<title>hCaptcha solve page</title>`)
+	captchaTitle := title.FindAllString(body, -1)
+	if len(captchaTitle) == 0 {
+		return false
+	}
+	return true
+}
+
+//func dynamicHTML(body string) (is bool) {
+//	min, _ := regexp.Compile("Disable minification")
+//	result := min.FindAllString(body, -1)
+//	if len(result) == 0 {
+//		return false
+//	}
+//	return true
+//}
+
 func next(body string) (link string) {
 	//fmt.Println(body)
 	next_regex, _ := regexp.Compile(`<a\shref='\/jobs\?q.*aria-label='Pr`)
@@ -72,36 +90,37 @@ func regex(body string, c chan map[string]info) {
 	//fmt.Println(local_results)
 
 	/////////////////////////////// RECUPERANDO EMPRESA ///////////////////////////////
-	company_regex, _ := regexp.Compile(`<div class="heading6 company_location tapItem-gutter companyInfo">.*?<\/span>`)
-    company_results := (company_regex.FindAllString(body, -1))
-    // fmt.Println("------")
-    // fmt.Println(company_results)
-    // fmt.Println("------")
-    preprocess6, _ := regexp.Compile(`.*">`)
-    preprocess7, _ := regexp.Compile(`</span>`)
-	preprocess8, _ := regexp.Compile(`</a>`)
-    
-    for index, company := range company_results {
-        company := (preprocess6.ReplaceAllString(company, ""))
-        company = (preprocess7.ReplaceAllString(company, ""))
-		company = (preprocess8.ReplaceAllString(company, ""))
-        company_results[index] = company
-		fmt.Println(company)
-    }
-	info_list = append(info_list, company_results)
-
-
+	//company_regex, _ := regexp.Compile(`class="jcs-JobTitle" href=".*?">`)
+	//company_results := company_regex.FindAllString(body, -1)
+	////println(body)
+	////fmt.Println("------")
+	////fmt.Println(company_results)
+	////fmt.Println("------")
+	//preprocess7, _ := regexp.Compile(`class="jcs-JobTitle" href="`)
+	//preprocess8, _ := regexp.Compile(`">`)
+	//
+	//for index, company := range company_results {
+	//	company := (preprocess7.ReplaceAllString(company, ""))
+	//	company = (preprocess8.ReplaceAllString(company, ""))
+	//	//println(company)
+	//	company_results[index] = company
+	//	//fmt.Println(company)
+	//}
+	//info_list = append(info_list, company_results)
 
 	/////////////////////////////// Criando Map ///////////////////////////////
 	internships := make(map[string]info)
 	n := len(hash_results)
 	for _, i := range info_list {
 		if n != len(i) {
+			println(body)
+			fmt.Println(i, len(i))
+			fmt.Println(info_list, n)
 			panic("Error in regex")
 		}
 	}
 	for index, hash := range hash_results {
-		i := info{info_list[0][index], info_list[1][index]}
+		i := info{info_list[0][index], info_list[1][index], ""}
 		internships[hash] = i
 	}
 	c <- internships
