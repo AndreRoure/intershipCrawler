@@ -8,11 +8,13 @@ import (
 func next(body string) (link string) {
 	//fmt.Println(body)
 	next_regex, _ := regexp.Compile(`<a\shref='\/jobs\?q.*aria-label='Pr`)
-	next_results := (next_regex.FindAllString(body, -1))
+	next_results := next_regex.FindAllString(body, -1)
+	if len(next_results) == 0 {
+		return ""
+	}
 	v := next_results[0][len(next_results[0])-80:]
 	regex2, _ := regexp.Compile(`href='.*?'`)
 	v = regex2.FindString(v)
-
 	preprocess10, _ := regexp.Compile(`href='`)
 	preprocess11, _ := regexp.Compile(`'`)
 	v = preprocess10.ReplaceAllString(v, "")

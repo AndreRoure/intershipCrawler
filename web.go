@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"sync"
@@ -11,6 +10,7 @@ func get(link string, w *sync.WaitGroup, c chan map[string]info) {
 	resp, err := http.Get(link)
 	if err == nil {
 		b, err := io.ReadAll(resp.Body)
+		//print(string(b))
 		if err == nil {
 			w.Add(1)
 			go get(next(string(b)), w, c)
@@ -20,5 +20,5 @@ func get(link string, w *sync.WaitGroup, c chan map[string]info) {
 		}
 	}
 	defer w.Done()
-	fmt.Println(err)
+	//fmt.Println(err)
 }
