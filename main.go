@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-func request() []info {
+func request() map[string]info {
 	urls := []string{"https://br.indeed.com/empregos?q=R%24%20100.000&l=Bras&vjk=fa673dcce786010c"}
 	internships := make(map[string]info)
 	messages := make(chan map[string]info)
@@ -29,13 +29,7 @@ func request() []info {
 		}
 	}
 	fmt.Println("DONE")
-
-	v := make([]info, len(internships))
-
-	for _, value := range internships {
-		v = append(v, value)
-	}
-	return v
+	return internships
 }
 
 type info struct {
