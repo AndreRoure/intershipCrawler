@@ -5,16 +5,16 @@ import (
 	"sync"
 )
 
-func request(urls []string) map[string]info {
+func request(url string) map[string]info {
 	//urls := []string{"https://br.indeed.com/empregos?q=R%24%20100.000&l=Bras&vjk=fa673dcce786010c"}
 	internships := make(map[string]info)
 	messages := make(chan map[string]info)
 	routines := sync.WaitGroup{}
 
-	for _, link := range urls {
-		routines.Add(1)
-		go get(link, &routines, messages)
-	}
+	//for _, link := range url {
+	routines.Add(1)
+	go get(url, &routines, messages)
+	//}
 
 	go func() {
 		fmt.Println("WAITING")
