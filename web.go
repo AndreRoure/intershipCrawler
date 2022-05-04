@@ -28,17 +28,17 @@ func get(link string, w *sync.WaitGroup, c chan map[string]info) {
 	//fmt.Println(err)
 }
 
-func getDescription(hash string) (description string) {
-	resp, err := http.Get(link)
-	if err == nil {
-		b, err := io.ReadAll(resp.Body)
-		//print(string(b))
-		if err == nil {
-			if catchCaptcha(string(b)) {
-				return getDescription(hash)
-			}
-			return regexDescription(string(b))
-		}
-	}
-	return ""
-}
+//func getDescription(hash string) (description string) {
+//	resp, err := http.Get("https://br.indeed.com/?vjk=" + hash)
+//	if err == nil {
+//		b, err := io.ReadAll(resp.Body)
+//		//print(string(b))
+//		if err == nil {
+//			if catchCaptcha(string(b)) {
+//				return getDescription(hash)
+//			}
+//			return regexDescription(string(b))
+//		}
+//	}
+//	return ""
+//}

@@ -25,7 +25,6 @@ func main() {
 	for m := range messages {
 		for k, v := range m {
 			internships[k] = v
-			go getDescription()
 			fmt.Println(k, v)
 		}
 	}
@@ -33,8 +32,7 @@ func main() {
 }
 
 type info struct {
-	titulo    string
-	local     string
-	descricao string
-	link      string
+	titulo string
+	local  string
+	link   string
 }
