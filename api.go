@@ -19,9 +19,14 @@ type Vagas struct {
 	Name string
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func getVagas(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
 	w.Header().Set("Content=Type", "aplication/json")
 
 	json.NewEncoder(w).Encode(request())
-
 }
