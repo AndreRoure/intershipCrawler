@@ -11,7 +11,7 @@ func request(url string) map[string]info {
 	messages := make(chan map[string]info)
 	routines := sync.WaitGroup{}
 
-	//for _, link := range url {
+	//for _, link := range urls {
 	routines.Add(1)
 	go get(url, &routines, messages)
 	//}

@@ -23,6 +23,7 @@ func get(link string, w *sync.WaitGroup, c chan map[string]info) {
 			defer w.Done()
 			return
 		}
+		println(err)
 	}
 	defer w.Done()
 	//fmt.Println(err)
