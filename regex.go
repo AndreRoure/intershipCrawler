@@ -120,9 +120,21 @@ func regex(body string, c chan map[string]info) {
 		}
 	}
 	for index, hash := range hash_results {
-		i := info{info_list[0][index], info_list[1][index], ""}
+		i := info{info_list[0][index], info_list[1][index], getDescription(hash), ""}
 		internships[hash] = i
 	}
 	c <- internships
 
+}
+
+func regexDescription(body string) (description string) {
+	regex, _ := regexp.Compile(`data-jk="(.*?)"`)
+	result := (regex.FindString(body))
+
+	preprocess1, _ := regexp.Compile(`data-jk="`)
+	preprocess2, _ := regexp.Compile(`"`)
+
+	result := (preprocess1.ReplaceAllString(result, ""))
+	result = (preprocess2.ReplaceAllString(hash, ""))
+	return hash
 }

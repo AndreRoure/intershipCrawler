@@ -1,2 +1,2 @@
 # intershipCrawler
-Web Crawler to look for interships
+Web Crawler to look for interships/jobs
