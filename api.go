@@ -27,6 +27,7 @@ func getVagas(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	w.Header().Set("Content=Type", "aplication/json")
-
-	json.NewEncoder(w).Encode(request())
+	result := make(map[int]map[string]info)
+	result[0] = request()
+	json.NewEncoder(w).Encode(result)
 }
