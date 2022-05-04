@@ -26,6 +26,11 @@ func enableCors(w *http.ResponseWriter) {
 func getVagas(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
+	urls, _ := r.URL.Query()["url"]
+	url := urls[0]
+
+	fmt.Println("Url Param 'url' is: " + string(url))
+
 	w.Header().Set("Content=Type", "aplication/json")
 	result := []info{}
 	internships := request()
