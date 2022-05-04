@@ -5,8 +5,8 @@ import (
 	"sync"
 )
 
-func main() {
-	urls := []string{"https://br.indeed.com/jobs?q&l=Bras%C3%ADlia%2C%20DF&vjk=bd05e6fb411225f9"}
+func request() map[string]info {
+	urls := []string{"https://br.indeed.com/empregos?q=R%24%20100.000&l=Bras&vjk=fa673dcce786010c"}
 	internships := make(map[string]info)
 	messages := make(chan map[string]info)
 	routines := sync.WaitGroup{}
@@ -29,6 +29,7 @@ func main() {
 		}
 	}
 	fmt.Println("DONE")
+	return internships
 }
 
 type info struct {
