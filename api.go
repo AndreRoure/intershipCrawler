@@ -27,13 +27,12 @@ func getVagas(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	urls, _ := r.URL.Query()["url"]
-	url := urls[0]
 
-	fmt.Println("Url Param 'url' is: " + string(url))
+	//fmt.Println("Url Param 'url' is: " + string(urls))
 
 	w.Header().Set("Content=Type", "aplication/json")
 	result := []info{}
-	internships := request()
+	internships := request(urls)
 	for _, info := range internships {
 		result = append(result, info)
 	}

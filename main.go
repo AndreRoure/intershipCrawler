@@ -5,8 +5,8 @@ import (
 	"sync"
 )
 
-func request() map[string]info {
-	urls := []string{"https://br.indeed.com/empregos?q=R%24%20100.000&l=Bras&vjk=fa673dcce786010c"}
+func request(urls []string) map[string]info {
+	//urls := []string{"https://br.indeed.com/empregos?q=R%24%20100.000&l=Bras&vjk=fa673dcce786010c"}
 	internships := make(map[string]info)
 	messages := make(chan map[string]info)
 	routines := sync.WaitGroup{}
