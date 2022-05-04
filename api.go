@@ -28,7 +28,8 @@ func getVagas(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content=Type", "aplication/json")
 	result := []info{}
-	for _, info := range result {
+	internships := request()
+	for _, info := range internships {
 		result = append(result, info)
 	}
 	json.NewEncoder(w).Encode(result)
