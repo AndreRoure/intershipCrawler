@@ -28,8 +28,5 @@ func getVagas(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content=Type", "aplication/json")
 
-	interships := request()
-	for _, i := range interships {
-		json.NewEncoder(w).Encode(i)
-	}
+	json.NewEncoder(w).Encode(request())
 }
