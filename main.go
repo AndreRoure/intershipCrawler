@@ -33,7 +33,7 @@ func request() map[string]info {
 }
 
 type info struct {
-	titulo string
-	local  string
-	link   string
+	Titulo string
+	Local  string
+	Link   string
 }
